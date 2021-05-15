@@ -1,14 +1,14 @@
 package danylko.vendingsnackmachine.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Product implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -19,6 +19,9 @@ public class Product implements Serializable {
 
     @Column
     private Integer amount;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchase> purchases;
 
     public Product(String category, Double price, Integer amount) {
         this.category = category;
