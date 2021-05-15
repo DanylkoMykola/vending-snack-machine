@@ -4,6 +4,7 @@ import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.repo.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,5 +40,13 @@ public class ProductServiceJPAImpl implements ProductService {
     @Override
     public List<Product> deleteEmptyCategories() {
         return repository.deleteProductByAmount(0);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        Iterable<Product> iterable = repository.findAll();
+        iterable.forEach(products::add);
+        return products;
     }
 }
