@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Product implements Serializable {
+public class Product implements Serializable, Comparable<Product> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +37,11 @@ public class Product implements Serializable {
     public Product() {
     }
 
+    @Override
+    public int compareTo(Product o) {
+        return this.category.compareTo(o.category);
+    }
+
     public Long getId() {
         return id;
     }
@@ -63,5 +68,20 @@ public class Product implements Serializable {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        return category.equals(product.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return category.hashCode();
     }
 }
