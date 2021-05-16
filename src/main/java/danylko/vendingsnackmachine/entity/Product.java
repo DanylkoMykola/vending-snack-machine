@@ -84,4 +84,6 @@ public class Product implements Serializable, Comparable<Product> {
     public int hashCode() {
         return category.hashCode();
     }
+
+
 }

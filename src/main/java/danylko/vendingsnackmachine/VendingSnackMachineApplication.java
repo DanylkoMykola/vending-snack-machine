@@ -1,16 +1,12 @@
 package danylko.vendingsnackmachine;
 
-import danylko.vendingsnackmachine.command.AddCategoryCommand;
 import danylko.vendingsnackmachine.command.Command;
 import danylko.vendingsnackmachine.command.CommandHandler;
-import danylko.vendingsnackmachine.service.ProductService;
-import danylko.vendingsnackmachine.service.ProductServiceJPAImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 @SpringBootApplication
@@ -25,13 +21,23 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String[] arguments;
         String str = "";
-        String command = "";
+        String commandStr = "";
+        System.out.println("\nPlease start inputting your command. If you need help input \"help\":");
         try {
-            while((str = reader.readLine()) != null) {
-                arguments = str.split(" ");
-                if(arguments.length > 1)
-                command = arguments[0];
-                CommandHandler.commands.get(command).execute(str);
+            while(!(str = reader.readLine()).equals("exit")) {
+                if (!str.isEmpty()) {
+                    arguments = str.split(" ");
+                    commandStr = arguments[0];
+                    Command command = CommandHandler.commands.get(commandStr);
+                    if (command != null) {
+                        command.execute(str);
+                    }
+                    else {
+                        System.out.println("Enter correct command:");
+                    }
+                }
+
+
             }
 
         } catch (Exception e) {

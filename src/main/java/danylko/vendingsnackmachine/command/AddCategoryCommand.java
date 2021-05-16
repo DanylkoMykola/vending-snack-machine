@@ -30,17 +30,25 @@ public class AddCategoryCommand implements Command{
 
     private Product parseProduct(String arguments) {
         Product product = null;
-        String[] argsArr = arguments.split(" ");
-        StringBuilder category = new StringBuilder();
-        for (int i = 1; i < argsArr.length - 2; i++ ) {
-            category.append(argsArr[i]).append(" ");
-        }
-        try {
-            double price = Double.parseDouble(argsArr[argsArr.length-2]);
-            int amount = Integer.parseInt(argsArr[argsArr.length-1]);
-            product = new Product(category.toString().replace("\"", ""), price, amount);
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter correct format of price and amount");
+        String[] strArr = arguments.split("\"");
+        String[] numArr;
+        String category;
+        double price;
+        int amount = 0;
+        if (strArr.length == 3) {
+            category = strArr[1];
+            numArr = strArr[2].trim().split(" ");
+            if (numArr.length != 0 && numArr.length <= 2) {
+                try {
+                        price = Double.parseDouble(numArr[0]);
+                    if (numArr.length == 2)
+                        amount = Integer.parseInt(numArr[1]);
+                    product = new Product(category.replace("\"", ""), price, amount);
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter correct format of price and amount");
+                    e.printStackTrace();
+                }
+            }
         }
         return product;
     }
