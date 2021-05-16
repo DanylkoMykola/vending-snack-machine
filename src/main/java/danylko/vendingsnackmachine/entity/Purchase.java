@@ -11,7 +11,6 @@ public class Purchase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     @ManyToOne(cascade = CascadeType.ALL)
     private Product product;
 

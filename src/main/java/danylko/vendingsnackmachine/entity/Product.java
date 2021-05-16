@@ -20,7 +20,7 @@ public class Product implements Serializable, Comparable<Product> {
     @Column
     private Integer amount;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Purchase> purchases;
 
     public Product(String category, Double price, Integer amount) {
