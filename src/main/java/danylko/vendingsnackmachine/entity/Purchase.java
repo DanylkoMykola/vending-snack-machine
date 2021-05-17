@@ -50,7 +50,6 @@ public class Purchase implements Serializable {
 
     @Override
     public String toString() {
-        DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
-        return date + "\n" + product.getCategory() + " " +  priceFormat.format(product.getPrice());
+        return date + "\n" + product.toString();
     }
 }

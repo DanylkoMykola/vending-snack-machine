@@ -3,6 +3,7 @@ package danylko.vendingsnackmachine.service;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.repo.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class ProductServiceJPAImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public List<Product> deleteEmptyCategories() {
         return repository.deleteProductByAmount(0);
     }

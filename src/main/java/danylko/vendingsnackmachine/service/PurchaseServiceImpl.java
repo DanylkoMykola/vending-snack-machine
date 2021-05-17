@@ -6,6 +6,7 @@ import danylko.vendingsnackmachine.repo.PurchaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAdjusters;
@@ -29,35 +30,25 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Map<Product, Integer> getReportByDate(String date) {
+    public Map<Product, Integer> getReportByDate(LocalDate date) {
+        List<Purchase> purchases = repository.findPurchaseByDate(date);
+        return getReport(purchases);
+    }
+    @Override
+    public Map<Product, Integer> getReportByYearMonth(YearMonth yearMonth) {
+        List<Purchase> purchases = repository.findPurchasesByDateBetween(
+                yearMonth.atDay(1),
+                yearMonth.atEndOfMonth());
+        return getReport(purchases);
+    }
+    private Map<Product, Integer> getReport(List<Purchase> purchases) {
         Map<Product, Integer> report = new TreeMap<>();
-        List<Purchase> purchases = findAllByDate(date);
-
         for (Purchase purchase : purchases) {
-            report.computeIfPresent(purchase.getProduct(), (key, val) -> val++);
-            report.putIfAbsent(purchase.getProduct(), 0);
+            report.computeIfPresent(purchase.getProduct(), (key, val) -> val + 1);
+            report.putIfAbsent(purchase.getProduct(), 1);
         }
-         return report;
+        return report;
     }
 
-    private List<Purchase>  findAllByDate(String date) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter dateMonthFormatter = DateTimeFormatter.ofPattern("yyyy-MM");
-        List<Purchase> purchases;
-        try{
-            if (date.trim().length() > 7) {
-                LocalDate localDate = LocalDate.parse(date, dateFormatter);
-                purchases = repository.findPurchaseByDate(localDate);
-            }
-            else {
-                LocalDate localDateMonth = LocalDate.parse(date, dateMonthFormatter);
-                LocalDate from = localDateMonth.with(TemporalAdjusters.firstDayOfMonth());
-                LocalDate to = localDateMonth.with(TemporalAdjusters.firstDayOfMonth());
-                purchases = repository.findPurchasesByDateBetween(from, to);
-            }
-        } catch (DateTimeParseException e) {
-            return new ArrayList<>();
-        }
-        return purchases;
-    }
+
 }

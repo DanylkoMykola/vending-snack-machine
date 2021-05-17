@@ -30,13 +30,12 @@ public class AddCategoryCommand implements Command{
             else {
                 product = new Product(category, price);
             }
-
         } catch (ProductParseException e) {
             System.out.println(e.getMessage());
         }
         Product productFromDB = productService.create(product);
         if (productFromDB != null) {
-            System.out.println(productFromDB.toString());
+            System.out.println(productFromDB.toString() + " " + productFromDB.getAmount());
         }
     }
     private boolean isAmountPresent(String args) {

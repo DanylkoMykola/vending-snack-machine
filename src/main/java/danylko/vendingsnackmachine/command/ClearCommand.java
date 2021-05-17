@@ -7,20 +7,21 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ListCommand implements Command{
-    public static final String COMMAND_NAME = "list";
+public class ClearCommand implements Command {
+
+    public static final String COMMAND_NAME = "clear";
     private final ProductService productService;
 
-    public ListCommand(ProductService productService) {
+    public ClearCommand(ProductService productService) {
         this.productService = productService;
         CommandHandler.commands.put(COMMAND_NAME, this);
     }
 
     @Override
     public void execute(String args) {
-        List<Product> products = productService.getAllProducts();
-        for (Product  product : products) {
-            System.out.println(product.toString() + " " + product.getAmount());
+        List<Product> products = productService.deleteEmptyCategories();
+        for (Product product : products) {
+            System.out.println(product.toString());
         }
     }
 }

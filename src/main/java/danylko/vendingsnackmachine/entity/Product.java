@@ -91,6 +91,6 @@ public class Product implements Serializable, Comparable<Product> {
     @Override
     public String toString() {
         DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
-        return category + " " + priceFormat.format(price) + " " + amount;
+        return category + " " + priceFormat.format(price);
     }
 }

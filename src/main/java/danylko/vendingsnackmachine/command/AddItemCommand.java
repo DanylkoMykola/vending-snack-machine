@@ -31,7 +31,7 @@ public class AddItemCommand implements Command{
         }
         productFromDB = productService.update(product);
         if (productFromDB != null) {
-            System.out.println(productFromDB.toString());
+            System.out.println(productFromDB.toString() + " " + productFromDB.getAmount());
         }
         else if (isValid){
             System.out.println("There is no existing category that you are trying to add!");

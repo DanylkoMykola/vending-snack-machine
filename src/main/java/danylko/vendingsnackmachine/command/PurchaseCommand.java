@@ -42,5 +42,8 @@ public class PurchaseCommand implements Command {
             purchase = purchaseService.save( new Purchase(productFromDB, date));
             System.out.println(purchase.toString());
         }
+        else {
+            System.out.println("There is no existing category that you are trying to purchase!");
+        }
     }
 }
