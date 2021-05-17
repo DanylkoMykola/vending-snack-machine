@@ -10,7 +10,7 @@ public class ProductParser {
         }
         int startIndex = args.indexOf("\"");
         int endIndex = args.indexOf("\"", startIndex +1);
-        return args.substring(startIndex + 1, endIndex - 1);
+        return args.substring(startIndex + 1, endIndex);
     }
 
     public static double parsePrice(String args) throws ProductParseException{
@@ -35,10 +35,12 @@ public class ProductParser {
         if (!checkValidString(args)) {
             throw new ProductParseException("No amount to parse!");
         }
-        int startIndex = args.lastIndexOf(" ");
+        String trimArgs = args.trim();
+        int startIndex = trimArgs.lastIndexOf(" ");
         try {
-            return Integer.parseInt(args.substring(startIndex).trim());
+            return Integer.parseInt(trimArgs.substring(startIndex + 1));
         } catch (NumberFormatException e) {
+            e.printStackTrace();
             throw new ProductParseException("Failed to parse amount. Make sure that you input the correct values!", e);
         }
     }

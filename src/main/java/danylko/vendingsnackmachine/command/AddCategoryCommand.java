@@ -34,5 +34,5 @@ public class AddCategoryCommand implements Command{
             System.out.println(productFromDB.toString());
         }
     }
-    
+
 }
