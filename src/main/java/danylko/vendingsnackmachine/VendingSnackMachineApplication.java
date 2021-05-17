@@ -33,7 +33,7 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
                         command.execute(str);
                     }
                     else {
-                        System.out.println("Enter correct command:");
+                        System.out.println("Enter correct command:a");
                     }
                 }
 

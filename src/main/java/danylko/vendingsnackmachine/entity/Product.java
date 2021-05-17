@@ -2,7 +2,10 @@ package danylko.vendingsnackmachine.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 public class Product implements Serializable, Comparable<Product> {
@@ -85,5 +88,9 @@ public class Product implements Serializable, Comparable<Product> {
         return category.hashCode();
     }
 
-
+    @Override
+    public String toString() {
+        DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
+        return category + " " + priceFormat.format(price) + " " + amount;
+    }
 }
