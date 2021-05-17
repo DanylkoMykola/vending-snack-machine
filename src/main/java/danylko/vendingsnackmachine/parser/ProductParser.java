@@ -40,7 +40,6 @@ public class ProductParser {
         try {
             return Integer.parseInt(args.substring(startIndex + 1));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             throw new ProductParseException("Failed to parse amount. Make sure that you input the correct values!", e);
         }
     }
