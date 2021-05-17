@@ -33,7 +33,7 @@ public class ProductServiceJPAImpl implements ProductService {
         if (productFromDB == null){
             return null;
         }
-        productFromDB.setAmount(product.getAmount());
+        productFromDB.setAmount(product.getAmount() + productFromDB.getAmount());
         return repository.save(productFromDB);
     }
 

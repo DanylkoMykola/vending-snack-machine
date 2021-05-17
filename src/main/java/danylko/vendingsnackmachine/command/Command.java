@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface Command {
-    void execute(String arguments);
+    void execute(String args);
 }

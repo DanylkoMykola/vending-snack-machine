@@ -7,44 +7,33 @@ import danylko.vendingsnackmachine.service.ProductService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AddCategoryCommand implements Command{
+public class AddItemCommand implements Command{
 
-    public static final String COMMAND_NAME = "addCategory";
+    public static final String COMMAND_NAME = "addItem";
     private final ProductService productService;
 
-    public AddCategoryCommand(ProductService productService) {
+    public AddItemCommand(ProductService productService) {
         this.productService = productService;
         CommandHandler.commands.put(COMMAND_NAME, this);
     }
-
     @Override
     public void execute(String args) {
+        boolean isValid = true;
         Product product = null;
         try {
             String category = ProductParser.parseCategory(args);
-            double price = ProductParser.parsePrice(args);
-            if (isAmountPresent(args)) {
-                int amount = ProductParser.parseAmount(args);
-                product = new Product(category, price, amount);
-            }
-            else {
-                product = new Product(category, price);
-            }
-
+            int amount = ProductParser.parseAmount(args);
+            product = new Product(category, null, amount);
         } catch (ProductParseException e) {
+            isValid = false;
             System.out.println(e.getMessage());
         }
-        Product productFromDB = productService.create(product);
+        Product productFromDB = productService.update(product);
         if (productFromDB != null) {
             System.out.println(productFromDB.toString());
         }
-    }
-    private boolean isAmountPresent(String args) {
-        String[] argsArr = args.split("\"");
-        if (argsArr.length == 3) {
-            String[] tempArr = argsArr[2].trim().split(" ");
-            return tempArr.length == 2;
+        else if (isValid){
+            System.out.println("There is no existing category that you are trying to add!");
         }
-        return false;
     }
 }
