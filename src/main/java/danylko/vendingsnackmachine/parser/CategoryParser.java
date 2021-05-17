@@ -7,12 +7,12 @@ public class CategoryParser {
         if(args == null || args.isEmpty()) {
             return category;
         }
-        String trimArgs = args.trim();
-        if (trimArgs.contains(" ")) {
-            category = trimArgs.substring(0 ,trimArgs.indexOf(" "));
+
+        if (args.contains(" ")) {
+            category = args.substring(0 ,args.indexOf(" "));
         }
         else {
-            category = trimArgs;
+            category = args;
         }
         return category;
     }

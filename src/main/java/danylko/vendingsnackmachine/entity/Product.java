@@ -21,7 +21,7 @@ public class Product implements Serializable, Comparable<Product> {
     private Double price;
 
     @Column
-    private Integer amount;
+    private Integer amount = 0;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Purchase> purchases;

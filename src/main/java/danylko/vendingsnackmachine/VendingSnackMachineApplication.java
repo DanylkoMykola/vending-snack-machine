@@ -25,11 +25,11 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
         String commandStr = "";
         System.out.println("\nPlease start inputting your command. If you need help input \"help\":");
         try {
-            while(!(str = reader.readLine()).equals("exit")) {
+            while(!(str = reader.readLine().trim()).equals("exit")) {
                 commandStr = CategoryParser.parseCategory(str);
                 Command command = CommandHandler.commands.get(commandStr);
                 if (command != null) {
-                    command.execute(str);
+                    command.execute(str.trim());
                 }
                 else {
                     System.out.println("Enter correct command:");

@@ -24,8 +24,14 @@ public class AddCategoryCommand implements Command{
         try {
             String category = ProductParser.parseCategory(args);
             double price = ProductParser.parsePrice(args);
-            int amount = ProductParser.parseAmount(args);
-            product = new Product(category, price, amount);
+            if (isAmountPresent(args)) {
+                int amount = ProductParser.parseAmount(args);
+                product = new Product(category, price, amount);
+            }
+            else {
+                product = new Product(category, price);
+            }
+
         } catch (ProductParseException e) {
             System.out.println(e.getMessage());
         }
@@ -34,5 +40,12 @@ public class AddCategoryCommand implements Command{
             System.out.println(productFromDB.toString());
         }
     }
-
+    private boolean isAmountPresent(String args) {
+        String[] argsArr = args.split("\"");
+        if (argsArr.length == 3) {
+            String[] tempArr = argsArr[2].trim().split(" ");
+            return tempArr.length == 2;
+        }
+        return false;
+    }
 }

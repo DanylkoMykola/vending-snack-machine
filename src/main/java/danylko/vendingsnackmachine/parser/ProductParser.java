@@ -35,10 +35,10 @@ public class ProductParser {
         if (!checkValidString(args)) {
             throw new ProductParseException("No amount to parse!");
         }
-        String trimArgs = args.trim();
-        int startIndex = trimArgs.lastIndexOf(" ");
+
+        int startIndex = args.lastIndexOf(" ");
         try {
-            return Integer.parseInt(trimArgs.substring(startIndex + 1));
+            return Integer.parseInt(args.substring(startIndex + 1));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             throw new ProductParseException("Failed to parse amount. Make sure that you input the correct values!", e);
