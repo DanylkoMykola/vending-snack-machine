@@ -2,7 +2,10 @@ package danylko.vendingsnackmachine.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 
 @Entity
 public class Purchase implements Serializable {
@@ -11,7 +14,7 @@ public class Purchase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Product product;
 
     @Column
@@ -43,5 +46,11 @@ public class Purchase implements Serializable {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
+        return date + "\n" + product.getCategory() + " " +  priceFormat.format(product.getPrice());
     }
 }

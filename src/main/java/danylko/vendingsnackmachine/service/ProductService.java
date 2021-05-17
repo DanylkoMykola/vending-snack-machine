@@ -11,5 +11,4 @@ public interface ProductService {
     Product update(Product product);
     List<Product> deleteEmptyCategories();
     List<Product> getAllProducts();
-
 }

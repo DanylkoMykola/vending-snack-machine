@@ -20,6 +20,7 @@ public class AddItemCommand implements Command{
     public void execute(String args) {
         boolean isValid = true;
         Product product = null;
+        Product productFromDB;
         try {
             String category = ProductParser.parseCategory(args);
             int amount = ProductParser.parseAmount(args);
@@ -28,7 +29,7 @@ public class AddItemCommand implements Command{
             isValid = false;
             System.out.println(e.getMessage());
         }
-        Product productFromDB = productService.update(product);
+        productFromDB = productService.update(product);
         if (productFromDB != null) {
             System.out.println(productFromDB.toString());
         }
