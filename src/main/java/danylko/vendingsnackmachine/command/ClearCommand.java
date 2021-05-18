@@ -1,5 +1,7 @@
 package danylko.vendingsnackmachine.command;
 
+import danylko.vendingsnackmachine.console.ConsoleWriter;
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.service.ProductService;
 import org.springframework.stereotype.Component;
@@ -20,8 +22,13 @@ public class ClearCommand implements Command {
     @Override
     public void execute(String args) {
         List<Product> products = productService.deleteEmptyCategories();
-        for (Product product : products) {
-            System.out.println(product.toString());
+        if (products.isEmpty())
+            ConsoleWriter.write(ConsoleHandler.CLEAR_EMPTY);
+        else{
+            for (Product product : products) {
+                ConsoleWriter.write(product.toString());
+            }
         }
+
     }
 }

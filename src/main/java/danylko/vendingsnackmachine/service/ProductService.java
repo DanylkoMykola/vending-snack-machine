@@ -11,4 +11,6 @@ public interface ProductService {
     Product update(Product product);
     List<Product> deleteEmptyCategories();
     List<Product> getAllProducts();
+    Product findByCategory(String category);
+    Product addAmount(Product product);
 }

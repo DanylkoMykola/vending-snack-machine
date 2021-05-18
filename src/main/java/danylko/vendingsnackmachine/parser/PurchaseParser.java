@@ -20,7 +20,6 @@ public class PurchaseParser {
         try {
             yearMonth = YearMonth.parse(args.substring(startIndex + 1), YEAR_MONTH_FORMATTER);
         } catch (DateTimeParseException e) {
-            e.printStackTrace();
             throw new PurchaseParseException(ConsoleHandler.DATE_EXCEPTION, e);
         }
         return yearMonth;
@@ -33,7 +32,6 @@ public class PurchaseParser {
         try {
             date = LocalDate.parse(args.substring(startIndex + 1), FULL_DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            e.printStackTrace();
             throw new PurchaseParseException(ConsoleHandler.DATE_EXCEPTION, e);
         }
         return date;

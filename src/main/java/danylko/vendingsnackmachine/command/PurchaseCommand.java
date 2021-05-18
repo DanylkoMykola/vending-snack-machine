@@ -28,23 +28,32 @@ public class PurchaseCommand implements Command {
     }
     @Override
     public void execute(String args) {
-        Product product = null;
+        String category = null;
         Purchase purchase;
         LocalDate date = null;
-        Product productFromDB;
+        Product productFromDB = null;
+        boolean isExist = true;
         try {
-            String category = ProductParser.parseCategory(args);
+            category = ProductParser.parseCategory(args);
             date = PurchaseParser.parseDate(args);
-            product = new Product(category, null, -1);
+            productFromDB = productService.findByCategory(category);
         } catch (ProductParseException | PurchaseParseException e) {
+            isExist = false;
             ConsoleWriter.write(e.getMessage());
         }
-        productFromDB = productService.update(product);
         if (productFromDB != null && date != null) {
             purchase = purchaseService.save( new Purchase(productFromDB, date));
-            ConsoleWriter.write(purchase.toString());
+            if (purchase == null) {
+                ConsoleWriter.write(ConsoleHandler.NOTHING_TO_BUY);
+            }
+            else {
+                productFromDB.decrementAmount();
+                productService.update(productFromDB);
+                ConsoleWriter.write(purchase.toString());
+            }
+
         }
-        else {
+        else if (isExist){
             ConsoleWriter.write(ConsoleHandler.NO_EXISTING_CATEGORY);
         }
     }

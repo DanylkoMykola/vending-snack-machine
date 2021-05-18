@@ -20,15 +20,21 @@ public class ProductParser {
         }
         int startIndex = args.lastIndexOf("\"");
         String temp = args.substring(startIndex+1).trim();
+        double price;
         try {
             if (temp.contains(" ")) {
-                return Double.parseDouble(temp.substring(0, temp.indexOf(" ")));
+                price = Double.parseDouble(temp.substring(0, temp.indexOf(" ")));
             }
             else {
-                return Double.parseDouble(temp);
+                price = Double.parseDouble(temp);
             }
         } catch (NumberFormatException e) {
             throw new ProductParseException(ConsoleHandler.PRICE_PARSE_EXCEPTION, e);
+        }
+        if (!isGraterThanZero(price)) {
+            throw new ProductParseException(ConsoleHandler.GREATER_THAN_ZERO);
+        } else {
+            return price;
         }
     }
 
@@ -36,18 +42,29 @@ public class ProductParser {
         if (!checkValidString(args)) {
             throw new ProductParseException(ConsoleHandler.AMOUNT_EXCEPTION);
         }
-
         int startIndex = args.lastIndexOf(" ");
+        int amount;
         try {
-            return Integer.parseInt(args.substring(startIndex + 1));
+            amount = Integer.parseInt(args.substring(startIndex + 1));
         } catch (NumberFormatException e) {
             throw new ProductParseException(ConsoleHandler.AMOUNT_PARSE_EXCEPTION, e);
+        }
+        if (!isGraterThanZero(amount)) {
+            throw new ProductParseException(ConsoleHandler.GREATER_THAN_ZERO);
+        } else {
+            return amount;
         }
     }
     public static boolean checkValidString(String str) {
         if (str == null || str.isEmpty()) {
             return false;
         }
-        return str.contains("\"");
+        return str.matches(".+\".+\".*");
+    }
+    public static boolean isGraterThanZero(double val) {
+        return val > 0.0;
+    }
+    public static boolean isGraterThanZero(int val) {
+        return val > 0;
     }
 }

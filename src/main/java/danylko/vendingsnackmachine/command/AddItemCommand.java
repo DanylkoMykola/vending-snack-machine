@@ -31,7 +31,7 @@ public class AddItemCommand implements Command{
             isExist = false;
             System.out.println(e.getMessage());
         }
-        productFromDB = productService.update(product);
+        productFromDB = productService.addAmount(product);
         if (productFromDB != null) {
             ConsoleWriter.write(productFromDB.toString() + " " + productFromDB.getAmount());
         }

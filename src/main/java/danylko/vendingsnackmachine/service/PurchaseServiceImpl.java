@@ -26,6 +26,9 @@ public class PurchaseServiceImpl implements PurchaseService {
         if (purchase == null) {
             return null;
         }
+        if (purchase.getProduct().getAmount() == 0){
+            return null;
+        }
         return repository.save(purchase);
     }
 

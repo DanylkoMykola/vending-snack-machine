@@ -22,11 +22,28 @@ public class ProductServiceJPAImpl implements ProductService {
         if (product == null) {
             return null;
         }
-        return repository.save(product);
+        Product productFromDB = repository.findProductByCategory(product.getCategory());
+        if (productFromDB == null){
+            return repository.save(product);
+        }
+        return productFromDB;
     }
+
 
     @Override
     public Product update(Product product) {
+        if (product == null) {
+            return null;
+        }
+        Product productFromDB = repository.findProductByCategory(product.getCategory());
+        if (productFromDB == null){
+            return null;
+        }
+        productFromDB.setAmount(product.getAmount());
+        return repository.save(productFromDB);
+    }
+    @Override
+    public Product addAmount(Product product) {
         if (product == null) {
             return null;
         }
@@ -50,5 +67,13 @@ public class ProductServiceJPAImpl implements ProductService {
         Iterable<Product> iterable = repository.findAll();
         iterable.forEach(products::add);
         return products;
+    }
+
+    @Override
+    public Product findByCategory(String category) {
+        if (category == null || category.isEmpty()){
+            return null;
+        }
+        return repository.findProductByCategory(category);
     }
 }

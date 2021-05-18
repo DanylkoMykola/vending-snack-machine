@@ -1,6 +1,7 @@
 package danylko.vendingsnackmachine.command;
 
 import danylko.vendingsnackmachine.console.ConsoleWriter;
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.service.ProductService;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,14 @@ public class ListCommand implements Command{
     @Override
     public void execute(String args) {
         List<Product> products = productService.getAllProducts();
-        for (Product  product : products) {
-            ConsoleWriter.write(product.toString() + " " + product.getAmount());
+        if (products.isEmpty()) {
+            ConsoleWriter.write(ConsoleHandler.EMPTY_LIST);
         }
+        else {
+            for (Product  product : products) {
+                ConsoleWriter.write(product.toString() + " " + product.getAmount());
+            }
+        }
+
     }
 }

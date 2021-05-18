@@ -1,6 +1,7 @@
 package danylko.vendingsnackmachine.command;
 
 import danylko.vendingsnackmachine.console.ConsoleWriter;
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.exception.PurchaseParseException;
 import danylko.vendingsnackmachine.parser.PurchaseParser;
@@ -30,6 +31,7 @@ public class ReportCommand implements Command {
         Map<Product, Integer> report = null;
         LocalDate date;
         YearMonth yearMonth;
+        boolean isExist = true;
         double total = 0.0;
         try {
             if (isYearMonthFormat(args)) {
@@ -41,9 +43,10 @@ public class ReportCommand implements Command {
                 report = purchaseService.getReportByDate(date);
             }
         } catch (PurchaseParseException e) {
+            isExist = false;
             ConsoleWriter.write(e.getMessage());
         }
-        if (report != null) {
+        if (report != null || !report.isEmpty()) {
             for (Map.Entry<Product, Integer> pair : report.entrySet()) {
                 Product product = pair.getKey();
                 int amount = pair.getValue();
@@ -52,6 +55,9 @@ public class ReportCommand implements Command {
             }
             DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
             ConsoleWriter.write(">" + "Total " + priceFormat.format(total));
+        }
+        else if (!isExist) {
+            ConsoleWriter.write(ConsoleHandler.REPORT_EMPTY);
         }
 
     }
