@@ -12,7 +12,6 @@ import java.util.*;
 public class PurchaseServiceImpl implements PurchaseService {
 
     private final PurchaseRepository repository;
-
     public PurchaseServiceImpl(PurchaseRepository repository) {
         this.repository = repository;
     }
@@ -40,11 +39,10 @@ public class PurchaseServiceImpl implements PurchaseService {
     private Map<Purchase, Integer> getReport(List<Purchase> purchases) {
         Map<Purchase, Integer> report = new TreeMap<>();
         for (Purchase purchase : purchases) {
-            report.computeIfPresent(purchase, (key, val) -> val + 1);
+            report.computeIfPresent(purchase, (key, val) -> val += 1);
             report.putIfAbsent(purchase, 1);
         }
         return report;
     }
-
 
 }

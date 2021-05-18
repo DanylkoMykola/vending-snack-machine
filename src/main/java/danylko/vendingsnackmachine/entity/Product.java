@@ -23,6 +23,12 @@ public class Product implements Serializable, Comparable<Product> {
     @Column
     private Integer amount = 0;
 
+    public Product(Long id, String category, Double price, Integer amount) {
+        this.id = id;
+        this.category = category;
+        this.price = price;
+        this.amount = amount;
+    }
 
     public Product(String category, Double price, Integer amount) {
         this.category = category;
