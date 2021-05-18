@@ -24,7 +24,7 @@ public class AddCategoryCommand implements Command{
         try {
             String category = ProductParser.parseCategory(args);
             double price = ProductParser.parsePrice(args);
-            if (isAmountPresent(args)) {
+            if (ProductParser.isAmountPresent(args)) {
                 int amount = ProductParser.parseAmount(args);
                 product = new Product(category, price, amount);
             }
@@ -38,13 +38,5 @@ public class AddCategoryCommand implements Command{
         if (productFromDB != null) {
             ConsoleWriter.write(productFromDB.toString() + " " + productFromDB.getAmount());
         }
-    }
-    private boolean isAmountPresent(String args) {
-        String[] argsArr = args.split("\"");
-        if (argsArr.length == 3) {
-            String[] tempArr = argsArr[2].trim().split(" ");
-            return tempArr.length == 2;
-        }
-        return false;
     }
 }

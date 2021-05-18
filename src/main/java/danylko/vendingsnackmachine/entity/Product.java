@@ -77,7 +77,7 @@ public class Product implements Serializable, Comparable<Product> {
 
     public void decrementAmount() {
         if (this.amount > 0) {
-            this.amount -= 1;
+            this.amount--;
         }
     }
 

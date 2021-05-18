@@ -34,7 +34,7 @@ public class ReportCommand implements Command {
         boolean isExist = true;
         double total = 0.0;
         try {
-            if (isYearMonthFormat(args)) {
+            if (PurchaseParser.isYearMonthFormat(args)) {
                 yearMonth = PurchaseParser.parseReportYearMonth(args);
                 report = purchaseService.getReportByYearMonth(yearMonth);
             }
@@ -61,12 +61,5 @@ public class ReportCommand implements Command {
             ConsoleWriter.write(ConsoleHandler.REPORT_EMPTY);
         }
 
-    }
-    private boolean isYearMonthFormat(String args) {
-        String[] argsArr = args.split(" ");
-        if (argsArr.length == 2) {
-            return argsArr[1].length() < 8;
-        }
-        return false;
     }
 }

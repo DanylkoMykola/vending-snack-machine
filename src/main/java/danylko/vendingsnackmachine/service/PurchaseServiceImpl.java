@@ -1,15 +1,11 @@
 package danylko.vendingsnackmachine.service;
 
-import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.entity.Purchase;
 import danylko.vendingsnackmachine.repo.PurchaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Service

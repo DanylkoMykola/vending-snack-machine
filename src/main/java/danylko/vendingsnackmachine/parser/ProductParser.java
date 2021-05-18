@@ -61,6 +61,14 @@ public class ProductParser {
         }
         return str.matches(".+\".+\".*");
     }
+    public static boolean isAmountPresent(String args) {
+        String[] argsArr = args.split("\"");
+        if (argsArr.length == 3) {
+            String[] tempArr = argsArr[2].trim().split(" ");
+            return tempArr.length == 2;
+        }
+        return false;
+    }
     public static boolean isGraterThanZero(double val) {
         return val > 0.0;
     }
