@@ -2,10 +2,7 @@ package danylko.vendingsnackmachine.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
-import java.util.Locale;
 
 @Entity
 public class Purchase implements Serializable {

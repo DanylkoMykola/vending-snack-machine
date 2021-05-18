@@ -18,7 +18,7 @@ public class AddItemCommand implements Command{
     }
     @Override
     public void execute(String args) {
-        boolean isValid = true;
+        boolean isExist = true;
         Product product = null;
         Product productFromDB;
         try {
@@ -26,14 +26,14 @@ public class AddItemCommand implements Command{
             int amount = ProductParser.parseAmount(args);
             product = new Product(category, null, amount);
         } catch (ProductParseException e) {
-            isValid = false;
+            isExist = false;
             System.out.println(e.getMessage());
         }
         productFromDB = productService.update(product);
         if (productFromDB != null) {
             System.out.println(productFromDB.toString() + " " + productFromDB.getAmount());
         }
-        else if (isValid){
+        else if (isExist){
             System.out.println("There is no existing category that you are trying to add!");
         }
     }

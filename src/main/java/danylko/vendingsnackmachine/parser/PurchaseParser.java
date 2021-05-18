@@ -1,5 +1,6 @@
 package danylko.vendingsnackmachine.parser;
 
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.exception.PurchaseParseException;
 
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class PurchaseParser {
             yearMonth = YearMonth.parse(args.substring(startIndex + 1), YEAR_MONTH_FORMATTER);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
-            throw new PurchaseParseException("Failed to parse date. Make sure that you input the correct values!", e);
+            throw new PurchaseParseException(ConsoleHandler.DATE_EXCEPTION, e);
         }
         return yearMonth;
     }
@@ -33,7 +34,7 @@ public class PurchaseParser {
             date = LocalDate.parse(args.substring(startIndex + 1), FULL_DATE_FORMATTER);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
-            throw new PurchaseParseException("Failed to parse date. Make sure that you input the correct values!", e);
+            throw new PurchaseParseException(ConsoleHandler.DATE_EXCEPTION, e);
         }
         return date;
     }

@@ -20,16 +20,15 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String str = "";
         String commandStr = "";
         System.out.println("\nPlease start inputting your command. If you need help input \"help\":");
-        try {
+        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             while(!(str = reader.readLine().trim()).equals("exit")) {
                 commandStr = CategoryParser.parseCategory(str);
                 Command command = CommandHandler.commands.get(commandStr);
                 if (command != null) {
-                    command.execute(str.trim());
+                    command.execute(str);
                 }
                 else {
                     System.out.println("Enter correct command:");

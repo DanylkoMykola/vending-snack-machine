@@ -1,12 +1,13 @@
 package danylko.vendingsnackmachine.parser;
 
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.exception.ProductParseException;
 
 public class ProductParser {
 
     public static String parseCategory(String args) throws ProductParseException {
         if (!checkValidString(args)) {
-            throw new ProductParseException("No category to parse. Make sure that category put in quotes!");
+            throw new ProductParseException(ConsoleHandler.CATEGORY_EXCEPTION);
         }
         int startIndex = args.indexOf("\"");
         int endIndex = args.indexOf("\"", startIndex +1);
@@ -15,7 +16,7 @@ public class ProductParser {
 
     public static double parsePrice(String args) throws ProductParseException{
         if (!checkValidString(args)) {
-            throw new ProductParseException("No price to parse!");
+            throw new ProductParseException(ConsoleHandler.PRICE_EXCEPTION);
         }
         int startIndex = args.lastIndexOf("\"");
         String temp = args.substring(startIndex+1).trim();
@@ -27,20 +28,20 @@ public class ProductParser {
                 return Double.parseDouble(temp);
             }
         } catch (NumberFormatException e) {
-            throw new ProductParseException("Failed to parse price. Make sure that you input the correct values!", e);
+            throw new ProductParseException(ConsoleHandler.PRICE_PARSE_EXCEPTION, e);
         }
     }
 
     public static int parseAmount(String args) throws ProductParseException {
         if (!checkValidString(args)) {
-            throw new ProductParseException("No amount to parse!");
+            throw new ProductParseException(ConsoleHandler.AMOUNT_EXCEPTION);
         }
 
         int startIndex = args.lastIndexOf(" ");
         try {
             return Integer.parseInt(args.substring(startIndex + 1));
         } catch (NumberFormatException e) {
-            throw new ProductParseException("Failed to parse amount. Make sure that you input the correct values!", e);
+            throw new ProductParseException(ConsoleHandler.AMOUNT_PARSE_EXCEPTION, e);
         }
     }
     public static boolean checkValidString(String str) {
