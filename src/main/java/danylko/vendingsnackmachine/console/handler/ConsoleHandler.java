@@ -9,8 +9,8 @@ public interface ConsoleHandler {
     String AMOUNT_PARSE_EXCEPTION = "Failed to parse amount." + ADVICE;
     String DATE_EXCEPTION = "Failed to parse date." + ADVICE;
     String START_LINE = "\nPlease start inputting your command:" +
-            "\n\tIf you need help enter \"help\":" +
-            "\n\tTo close app enter \"exit\"";
+            "\n\tIf you need help enter \"help\";" +
+            "\n\tTo close app enter \"exit\".";
     String NO_EXISTING_COMMAND = "Enter correct command:";
     String NO_EXISTING_CATEGORY = "There is no existing category!";
     String HELP = "Available commands: \n\texit";
