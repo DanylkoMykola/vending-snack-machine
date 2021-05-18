@@ -26,29 +26,26 @@ public class PurchaseServiceImpl implements PurchaseService {
         if (purchase == null) {
             return null;
         }
-        if (purchase.getProduct().getAmount() == 0){
-            return null;
-        }
         return repository.save(purchase);
     }
 
     @Override
-    public Map<Product, Integer> getReportByDate(LocalDate date) {
+    public Map<Purchase, Integer> getReportByDate(LocalDate date) {
         List<Purchase> purchases = repository.findPurchaseByDate(date);
         return getReport(purchases);
     }
     @Override
-    public Map<Product, Integer> getReportByYearMonth(YearMonth yearMonth) {
+    public Map<Purchase, Integer> getReportByYearMonth(YearMonth yearMonth) {
         List<Purchase> purchases = repository.findPurchasesByDateBetween(
                 yearMonth.atDay(1),
                 yearMonth.atEndOfMonth());
         return getReport(purchases);
     }
-    private Map<Product, Integer> getReport(List<Purchase> purchases) {
-        Map<Product, Integer> report = new TreeMap<>();
+    private Map<Purchase, Integer> getReport(List<Purchase> purchases) {
+        Map<Purchase, Integer> report = new TreeMap<>();
         for (Purchase purchase : purchases) {
-            report.computeIfPresent(purchase.getProduct(), (key, val) -> val + 1);
-            report.putIfAbsent(purchase.getProduct(), 1);
+            report.computeIfPresent(purchase, (key, val) -> val + 1);
+            report.putIfAbsent(purchase, 1);
         }
         return report;
     }

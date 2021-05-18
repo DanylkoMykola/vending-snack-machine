@@ -14,7 +14,7 @@ public class Product implements Serializable, Comparable<Product> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
+    @Column
     private String category;
 
     @Column
@@ -23,8 +23,6 @@ public class Product implements Serializable, Comparable<Product> {
     @Column
     private Integer amount = 0;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Purchase> purchases;
 
     public Product(String category, Double price, Integer amount) {
         this.category = category;

@@ -29,7 +29,7 @@ public class PurchaseCommand implements Command {
     @Override
     public void execute(String args) {
         String category = null;
-        Purchase purchase;
+        Purchase purchase = null;
         LocalDate date = null;
         Product productFromDB = null;
         boolean isExist = true;
@@ -41,8 +41,12 @@ public class PurchaseCommand implements Command {
             isExist = false;
             ConsoleWriter.write(e.getMessage());
         }
-        if (productFromDB != null && date != null) {
-            purchase = purchaseService.save( new Purchase(productFromDB, date));
+        if (productFromDB != null && date != null ) {
+            if (productFromDB.getAmount() != 0){
+                purchase = purchaseService.save( new Purchase(productFromDB.getCategory(),
+                        productFromDB.getPrice(),
+                        date));
+            }
             if (purchase == null) {
                 ConsoleWriter.write(ConsoleHandler.NOTHING_TO_BUY);
             }

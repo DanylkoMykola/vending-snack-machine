@@ -2,7 +2,7 @@ package danylko.vendingsnackmachine.command;
 
 import danylko.vendingsnackmachine.console.ConsoleWriter;
 import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
-import danylko.vendingsnackmachine.entity.Product;
+import danylko.vendingsnackmachine.entity.Purchase;
 import danylko.vendingsnackmachine.exception.PurchaseParseException;
 import danylko.vendingsnackmachine.parser.PurchaseParser;
 import danylko.vendingsnackmachine.service.PurchaseService;
@@ -28,7 +28,7 @@ public class ReportCommand implements Command {
 
     @Override
     public void execute(String args) {
-        Map<Product, Integer> report = null;
+        Map<Purchase, Integer> report = null;
         LocalDate date;
         YearMonth yearMonth;
         boolean isExist = true;
@@ -46,17 +46,18 @@ public class ReportCommand implements Command {
             isExist = false;
             ConsoleWriter.write(e.getMessage());
         }
-        if (report != null || !report.isEmpty()) {
-            for (Map.Entry<Product, Integer> pair : report.entrySet()) {
-                Product product = pair.getKey();
+        if (report != null && !report.isEmpty()) {
+            for (Map.Entry<Purchase, Integer> pair : report.entrySet()) {
+                Purchase purchase = pair.getKey();
                 int amount = pair.getValue();
-                total += product.getPrice() * amount;
-                ConsoleWriter.write(product.toString() + " " + amount);
+                total += purchase.getPrice() * amount;
+                ConsoleWriter.write(purchase.toString() + " " + amount);
             }
             DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
-            ConsoleWriter.write(">" + "Total " + priceFormat.format(total));
+            ConsoleWriter.write("Total " + priceFormat.format(total));
         }
-        else if (!isExist) {
+        else{
+            if (isExist)
             ConsoleWriter.write(ConsoleHandler.REPORT_EMPTY);
         }
 
