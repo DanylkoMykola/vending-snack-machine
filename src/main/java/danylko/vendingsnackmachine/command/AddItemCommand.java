@@ -5,7 +5,9 @@ import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.exception.ProductParseException;
 import danylko.vendingsnackmachine.parser.ProductParser;
+import danylko.vendingsnackmachine.parser.ProductParserImpl;
 import danylko.vendingsnackmachine.service.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,9 +15,12 @@ public class AddItemCommand implements Command{
 
     public static final String COMMAND_NAME = "addItem";
     private final ProductService productService;
+    private final ProductParser parser;
 
-    public AddItemCommand(ProductService productService) {
+    public AddItemCommand(ProductService productService,
+                         @Qualifier("productParserImpl") ProductParser parser) {
         this.productService = productService;
+        this.parser = parser;
         CommandHandler.commands.put(COMMAND_NAME, this);
     }
     @Override
@@ -24,8 +29,8 @@ public class AddItemCommand implements Command{
         Product product = null;
         Product productFromDB;
         try {
-            String category = ProductParser.parseCategory(args);
-            int amount = ProductParser.parseAmount(args);
+            String category = parser.parseCategory(args);
+            int amount = parser.parseAmount(args);
             product = new Product(category, null, amount);
         } catch (ProductParseException e) {
             isExist = false;

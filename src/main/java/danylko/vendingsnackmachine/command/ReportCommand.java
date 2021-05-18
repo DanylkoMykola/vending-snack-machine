@@ -5,7 +5,9 @@ import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Purchase;
 import danylko.vendingsnackmachine.exception.PurchaseParseException;
 import danylko.vendingsnackmachine.parser.PurchaseParser;
+import danylko.vendingsnackmachine.parser.PurchaseParserImpl;
 import danylko.vendingsnackmachine.service.PurchaseService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
@@ -20,9 +22,12 @@ public class ReportCommand implements Command {
 
     public static final String COMMAND_NAME = "report";
     private final PurchaseService purchaseService;
+    private final PurchaseParser parser;
 
-    public ReportCommand(PurchaseService purchaseService) {
+    public ReportCommand(PurchaseService purchaseService,
+                         @Qualifier("purchaseParserImpl") PurchaseParser parser) {
         this.purchaseService = purchaseService;
+        this.parser = parser;
         CommandHandler.commands.put(COMMAND_NAME, this);
     }
 
@@ -34,12 +39,12 @@ public class ReportCommand implements Command {
         boolean isExist = true;
         double total = 0.0;
         try {
-            if (PurchaseParser.isYearMonthFormat(args)) {
-                yearMonth = PurchaseParser.parseReportYearMonth(args);
+            if (parser.isYearMonthFormat(args)) {
+                yearMonth = parser.parseReportYearMonth(args);
                 report = purchaseService.getReportByYearMonth(yearMonth);
             }
             else {
-                date = PurchaseParser.parseDate(args);
+                date = parser.parseDate(args);
                 report = purchaseService.getReportByDate(date);
             }
         } catch (PurchaseParseException e) {

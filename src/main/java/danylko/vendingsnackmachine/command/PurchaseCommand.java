@@ -10,6 +10,7 @@ import danylko.vendingsnackmachine.parser.ProductParser;
 import danylko.vendingsnackmachine.parser.PurchaseParser;
 import danylko.vendingsnackmachine.service.ProductService;
 import danylko.vendingsnackmachine.service.PurchaseService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,22 +21,29 @@ public class PurchaseCommand implements Command {
     public static final String COMMAND_NAME = "purchase";
     private final ProductService productService;
     private final PurchaseService purchaseService;
+    private final PurchaseParser purchaseParser;
+    private final ProductParser productParser;
 
-    public PurchaseCommand(ProductService productService, PurchaseService purchaseService) {
+    public PurchaseCommand(ProductService productService,
+                           PurchaseService purchaseService,
+                           @Qualifier("purchaseParserImpl") PurchaseParser purchaseParser,
+                           ProductParser productParser) {
         this.productService = productService;
         this.purchaseService = purchaseService;
+        this.purchaseParser = purchaseParser;
+        this.productParser = productParser;
         CommandHandler.commands.put(COMMAND_NAME, this);
     }
     @Override
     public void execute(String args) {
-        String category = null;
+        String category;
         Purchase purchase = null;
         LocalDate date = null;
         Product productFromDB = null;
         boolean isExist = true;
         try {
-            category = ProductParser.parseCategory(args);
-            date = PurchaseParser.parseDate(args);
+            category = productParser.parseCategory(args);
+            date = purchaseParser.parseDate(args);
             productFromDB = productService.findByCategory(category);
         } catch (ProductParseException | PurchaseParseException e) {
             isExist = false;
