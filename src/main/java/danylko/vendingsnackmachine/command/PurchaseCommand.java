@@ -1,5 +1,7 @@
 package danylko.vendingsnackmachine.command;
 
+import danylko.vendingsnackmachine.console.ConsoleWriter;
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.entity.Purchase;
 import danylko.vendingsnackmachine.exception.ProductParseException;
@@ -35,15 +37,15 @@ public class PurchaseCommand implements Command {
             date = PurchaseParser.parseDate(args);
             product = new Product(category, null, -1);
         } catch (ProductParseException | PurchaseParseException e) {
-            System.out.println(e.getMessage());
+            ConsoleWriter.write(e.getMessage());
         }
         productFromDB = productService.update(product);
         if (productFromDB != null && date != null) {
             purchase = purchaseService.save( new Purchase(productFromDB, date));
-            System.out.println(purchase.toString());
+            ConsoleWriter.write(purchase.toString());
         }
         else {
-            System.out.println("There is no existing category that you are trying to purchase!");
+            ConsoleWriter.write(ConsoleHandler.NO_EXISTING_CATEGORY);
         }
     }
 }

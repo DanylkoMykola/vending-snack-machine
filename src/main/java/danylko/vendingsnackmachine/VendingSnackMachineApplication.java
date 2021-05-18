@@ -2,6 +2,8 @@ package danylko.vendingsnackmachine;
 
 import danylko.vendingsnackmachine.command.Command;
 import danylko.vendingsnackmachine.command.CommandHandler;
+import danylko.vendingsnackmachine.console.ConsoleWriter;
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.parser.CategoryParser;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +24,7 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
     public void run(String... args) {
         String str = "";
         String commandStr = "";
-        System.out.println("\nPlease start inputting your command. If you need help input \"help\":");
+        ConsoleWriter.write(ConsoleHandler.START_LINE);
         try ( BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             while(!(str = reader.readLine().trim()).equals("exit")) {
                 commandStr = CategoryParser.parseCategory(str);
@@ -31,7 +33,7 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
                     command.execute(str);
                 }
                 else {
-                    System.out.println("Enter correct command:");
+                    ConsoleWriter.write(ConsoleHandler.NO_EXISTING_COMMAND);
 
                 }
             }

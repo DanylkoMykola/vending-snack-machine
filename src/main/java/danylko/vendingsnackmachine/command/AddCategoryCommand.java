@@ -1,5 +1,6 @@
 package danylko.vendingsnackmachine.command;
 
+import danylko.vendingsnackmachine.console.ConsoleWriter;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.exception.ProductParseException;
 import danylko.vendingsnackmachine.parser.ProductParser;
@@ -31,11 +32,11 @@ public class AddCategoryCommand implements Command{
                 product = new Product(category, price);
             }
         } catch (ProductParseException e) {
-            System.out.println(e.getMessage());
+            ConsoleWriter.write(e.getMessage());
         }
         Product productFromDB = productService.create(product);
         if (productFromDB != null) {
-            System.out.println(productFromDB.toString() + " " + productFromDB.getAmount());
+            ConsoleWriter.write(productFromDB.toString() + " " + productFromDB.getAmount());
         }
     }
     private boolean isAmountPresent(String args) {

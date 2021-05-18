@@ -1,5 +1,7 @@
 package danylko.vendingsnackmachine.command;
 
+import danylko.vendingsnackmachine.console.ConsoleWriter;
+import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.exception.ProductParseException;
 import danylko.vendingsnackmachine.parser.ProductParser;
@@ -31,10 +33,10 @@ public class AddItemCommand implements Command{
         }
         productFromDB = productService.update(product);
         if (productFromDB != null) {
-            System.out.println(productFromDB.toString() + " " + productFromDB.getAmount());
+            ConsoleWriter.write(productFromDB.toString() + " " + productFromDB.getAmount());
         }
         else if (isExist){
-            System.out.println("There is no existing category that you are trying to add!");
+            ConsoleWriter.write(ConsoleHandler.NO_EXISTING_CATEGORY);
         }
     }
 }
