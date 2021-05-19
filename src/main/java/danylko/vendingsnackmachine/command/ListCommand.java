@@ -22,11 +22,11 @@ public class ListCommand implements Command{
     public void execute(String args) {
         List<Product> products = productService.getAllProducts();
         if (products.isEmpty()) {
-            ConsoleWriter.write(ConsoleHandler.EMPTY_LIST);
+            ConsoleWriter.println(ConsoleHandler.EMPTY_LIST);
         }
         else {
             for (Product  product : products) {
-                ConsoleWriter.write(product.toString() + " " + product.getAmount());
+                ConsoleWriter.println(product.toString() + " " + product.getAmount());
             }
         }
 

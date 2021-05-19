@@ -47,24 +47,24 @@ public class PurchaseCommand implements Command {
             productFromDB = productService.findByCategory(category);
         } catch (ProductParseException | PurchaseParseException e) {
             isExist = false;
-            ConsoleWriter.write(e.getMessage());
+            ConsoleWriter.println(e.getMessage());
         }
         if (productFromDB != null && date != null ) {
             if (productFromDB.getAmount() != 0){
                 purchase = purchaseService.save( new Purchase(productFromDB, date));
             }
             if (purchase == null) {
-                ConsoleWriter.write(ConsoleHandler.NOTHING_TO_BUY);
+                ConsoleWriter.println(ConsoleHandler.NOTHING_TO_BUY);
             }
             else {
                 productFromDB.decrementAmount();
                 productService.update(productFromDB);
-                ConsoleWriter.write(purchase.toString());
+                ConsoleWriter.println(purchase.toString());
             }
 
         }
         else if (isExist){
-            ConsoleWriter.write(ConsoleHandler.NO_EXISTING_CATEGORY);
+            ConsoleWriter.println(ConsoleHandler.NO_EXISTING_CATEGORY);
         }
     }
 }

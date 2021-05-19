@@ -63,7 +63,7 @@ public class ProductParserImpl implements ProductParser{
         }
         return str.matches(".+\".+\".*");
     }
-    public static boolean isAmountPresent(String args) {
+    public boolean isAmountPresent(String args) {
         String[] argsArr = args.split("\"");
         if (argsArr.length == 3) {
             String[] tempArr = argsArr[2].trim().split(" ");

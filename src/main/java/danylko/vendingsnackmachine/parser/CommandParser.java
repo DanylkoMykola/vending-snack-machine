@@ -15,4 +15,7 @@ public class CommandParser {
         }
         return command;
     }
+    public static String removeCharBiggerThen(String args){
+        return args.substring(1);
+    }
 }

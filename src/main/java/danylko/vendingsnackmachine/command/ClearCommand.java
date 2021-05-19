@@ -23,10 +23,10 @@ public class ClearCommand implements Command {
     public void execute(String args) {
         List<Product> products = productService.deleteEmptyCategories();
         if (products.isEmpty())
-            ConsoleWriter.write(ConsoleHandler.CLEAR_EMPTY);
+            ConsoleWriter.println(ConsoleHandler.CLEAR_EMPTY);
         else{
             for (Product product : products) {
-                ConsoleWriter.write(product.toString());
+                ConsoleWriter.println(product.toString());
             }
         }
 

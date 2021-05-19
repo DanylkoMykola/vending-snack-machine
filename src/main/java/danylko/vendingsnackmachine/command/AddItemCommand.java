@@ -5,7 +5,6 @@ import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.exception.ProductParseException;
 import danylko.vendingsnackmachine.parser.ProductParser;
-import danylko.vendingsnackmachine.parser.ProductParserImpl;
 import danylko.vendingsnackmachine.service.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -34,14 +33,14 @@ public class AddItemCommand implements Command{
             product = new Product(category, null, amount);
         } catch (ProductParseException e) {
             isExist = false;
-            System.out.println(e.getMessage());
+            ConsoleWriter.println(e.getMessage());
         }
         productFromDB = productService.addAmount(product);
         if (productFromDB != null) {
-            ConsoleWriter.write(productFromDB.toString() + " " + productFromDB.getAmount());
+            ConsoleWriter.println(productFromDB.toString() + " " + productFromDB.getAmount());
         }
         else if (isExist){
-            ConsoleWriter.write(ConsoleHandler.NO_EXISTING_CATEGORY);
+            ConsoleWriter.println(ConsoleHandler.NO_EXISTING_CATEGORY);
         }
     }
 }

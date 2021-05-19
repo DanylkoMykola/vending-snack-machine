@@ -23,15 +23,12 @@ public class ProductServiceJPAImpl implements ProductService {
         if (product == null) {
             return null;
         }
-        Product productFromDB = repository.findProductByCategory(product.getCategory());
-        if (productFromDB == null){
-            return repository.save(product);
+        Product productFromDB = repository.findProductByCategoryAndDeleteAtIsNull(product.getCategory());
+        if (productFromDB != null){
+            return productFromDB;
+
         }
-        if (productFromDB.getDeleteAt() != null)  {
-            productFromDB.setDeleteAt(null);
-            return repository.save(productFromDB);
-        }
-        return productFromDB;
+        return repository.save(product);
     }
 
 
@@ -40,8 +37,8 @@ public class ProductServiceJPAImpl implements ProductService {
         if (product == null) {
             return null;
         }
-        Product productFromDB = repository.findProductByCategory(product.getCategory());
-        if (productFromDB == null || productFromDB.getDeleteAt() != null){
+        Product productFromDB = repository.findProductByCategoryAndDeleteAtIsNull(product.getCategory());
+        if (productFromDB == null){
             return null;
         }
         productFromDB.setAmount(product.getAmount());
@@ -52,8 +49,8 @@ public class ProductServiceJPAImpl implements ProductService {
         if (product == null) {
             return null;
         }
-        Product productFromDB = repository.findProductByCategory(product.getCategory());
-        if (productFromDB == null || productFromDB.getDeleteAt() != null){
+        Product productFromDB = repository.findProductByCategoryAndDeleteAtIsNull(product.getCategory());
+        if (productFromDB == null){
             return null;
         }
         productFromDB.setAmount(product.getAmount() + productFromDB.getAmount());
@@ -63,7 +60,7 @@ public class ProductServiceJPAImpl implements ProductService {
     @Override
     @Transactional
     public List<Product> deleteEmptyCategories() {
-        List<Product> products = repository.findAllByAmount(0);
+        List<Product> products = repository.findAllByAmountAndDeleteAtIsNull(0);
         products.forEach(product -> product.setDeleteAt(LocalDate.now()));
         return products;
     }
@@ -81,6 +78,6 @@ public class ProductServiceJPAImpl implements ProductService {
         if (category == null || category.isEmpty()){
             return null;
         }
-        return repository.findProductByCategory(category);
+        return repository.findProductByCategoryAndDeleteAtIsNull(category);
     }
 }

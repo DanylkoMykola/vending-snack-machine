@@ -24,18 +24,19 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
     public void run(String... args) {
         String str = "";
         String commandStr = "";
-        ConsoleWriter.write(ConsoleHandler.START_LINE);
+        ConsoleWriter.println(ConsoleHandler.START_LINE);
+        ConsoleWriter.print(">");
         try ( BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             while(!(str = reader.readLine().trim()).equals("exit")) {
                 commandStr = CommandParser.parseCommand(str);
                 Command command = CommandHandler.commands.get(commandStr);
                 if (command != null) {
-                    command.execute(str);
+                    command.execute(CommandParser.removeCharBiggerThen(str));
                 }
                 else {
-                    ConsoleWriter.write(ConsoleHandler.NO_EXISTING_COMMAND);
-
+                    ConsoleWriter.println(ConsoleHandler.NO_EXISTING_COMMAND);
                 }
+                ConsoleWriter.print(">");
             }
         } catch (IOException e) {
             e.printStackTrace();

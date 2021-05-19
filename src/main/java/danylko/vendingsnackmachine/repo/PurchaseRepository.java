@@ -1,6 +1,8 @@
 package danylko.vendingsnackmachine.repo;
 
+import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.entity.Purchase;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDate;

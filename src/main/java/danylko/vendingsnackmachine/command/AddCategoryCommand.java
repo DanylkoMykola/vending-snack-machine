@@ -29,7 +29,7 @@ public class AddCategoryCommand implements Command{
         try {
             String category = parser.parseCategory(args);
             double price = parser.parsePrice(args);
-            if (ProductParserImpl.isAmountPresent(args)) {
+            if (parser.isAmountPresent(args)) {
                 int amount = parser.parseAmount(args);
                 product = new Product(category, price, amount);
             }
@@ -37,11 +37,11 @@ public class AddCategoryCommand implements Command{
                 product = new Product(category, price);
             }
         } catch (ProductParseException e) {
-            ConsoleWriter.write(e.getMessage());
+            ConsoleWriter.println(e.getMessage());
         }
         Product productFromDB = productService.create(product);
         if (productFromDB != null) {
-            ConsoleWriter.write(productFromDB.toString() + " " + productFromDB.getAmount());
+            ConsoleWriter.println(productFromDB.toString() + " " + productFromDB.getAmount());
         }
     }
 }

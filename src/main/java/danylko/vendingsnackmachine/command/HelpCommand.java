@@ -15,9 +15,9 @@ public class HelpCommand implements Command {
 
     @Override
     public void execute(String args) {
-        ConsoleWriter.write(ConsoleHandler.HELP);
+        ConsoleWriter.println(ConsoleHandler.HELP);
         for (String command : CommandHandler.commands.keySet()) {
-            ConsoleWriter.write("\t"+command);
+            ConsoleWriter.println("\t"+command);
         }
     }
 }

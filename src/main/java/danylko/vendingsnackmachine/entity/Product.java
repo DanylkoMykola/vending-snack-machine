@@ -7,6 +7,7 @@ import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @Entity
 public class Product implements Serializable, Comparable<Product> {
@@ -57,7 +58,11 @@ public class Product implements Serializable, Comparable<Product> {
 
     @Override
     public int compareTo(Product o) {
-        return this.category.compareTo(o.category);
+        int compareRes = this.category.compareTo(o.category);
+        if (compareRes == 0) {
+            return (int) (Math.round(this.price) - Math.round(o.price));
+        }
+        return compareRes;
     }
 
     public Long getId() {
@@ -109,12 +114,15 @@ public class Product implements Serializable, Comparable<Product> {
 
         Product product = (Product) o;
 
-        return category.equals(product.category);
+        if (!Objects.equals(category, product.category)) return false;
+        return Objects.equals(price, product.price);
     }
 
     @Override
     public int hashCode() {
-        return category.hashCode();
+        int result = category != null ? category.hashCode() : 0;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        return result;
     }
 
     @Override

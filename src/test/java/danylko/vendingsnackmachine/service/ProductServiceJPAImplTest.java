@@ -77,9 +77,9 @@ class ProductServiceJPAImplTest {
         Product productToDelete = new Product(1L,"Sweets", 20.55, 0);
         List<Product> products = new ArrayList<>();
         products.add(productToDelete);
-        when(productRepository.deleteProductByAmount(0)).thenReturn(products);
+        when(productRepository.findAllByAmountAndDeleteAtIsNull(0)).thenReturn(products);
         productService.deleteEmptyCategories();
-        verify(productRepository, times(1)).deleteProductByAmount(0);
+        verify(productRepository, times(1)).findAllByAmountAndDeleteAtIsNull(0);
         assertEquals(products.size(), 1);
     }
 

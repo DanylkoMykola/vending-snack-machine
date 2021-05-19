@@ -3,7 +3,6 @@ package danylko.vendingsnackmachine.command;
 import danylko.vendingsnackmachine.console.ConsoleWriter;
 import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
 import danylko.vendingsnackmachine.entity.Product;
-import danylko.vendingsnackmachine.entity.Purchase;
 import danylko.vendingsnackmachine.exception.PurchaseParseException;
 import danylko.vendingsnackmachine.parser.PurchaseParser;
 import danylko.vendingsnackmachine.service.PurchaseService;
@@ -49,21 +48,21 @@ public class ReportCommand implements Command {
             }
         } catch (PurchaseParseException e) {
             isExist = false;
-            ConsoleWriter.write(e.getMessage());
+            ConsoleWriter.println(e.getMessage());
         }
         if (report != null && !report.isEmpty()) {
             for (Map.Entry<Product, Integer> pair : report.entrySet()) {
                 Product product = pair.getKey();
                 int amount = pair.getValue();
                 total += product.getPrice() * amount;
-                ConsoleWriter.write(product.toString() + " " + amount);
+                ConsoleWriter.println(product.toString() + " " + amount);
             }
             DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
-            ConsoleWriter.write("Total " + priceFormat.format(total));
+            ConsoleWriter.println("Total " + priceFormat.format(total));
         }
         else{
             if (isExist)
-            ConsoleWriter.write(ConsoleHandler.REPORT_EMPTY);
+            ConsoleWriter.println(ConsoleHandler.REPORT_EMPTY);
         }
 
     }
