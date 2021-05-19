@@ -14,7 +14,7 @@ public interface ConsoleHandler {
             "\n\tTo close app enter \"exit\".";
     String NO_EXISTING_COMMAND = "Enter correct command:";
     String NO_EXISTING_CATEGORY = "There is no existing category or available product!";
-    String HELP = "Available commands: \n\texit";
+    String HELP = "Available commands: \n\t\texit";
     String EMPTY_LIST = "The list of products is empty!";
     String CLEAR_EMPTY = NOTHING_TO_TEMP + "clear!";
     String GREATER_THAN_ZERO = "Price and amount must be grater than zero";

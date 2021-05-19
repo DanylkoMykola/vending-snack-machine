@@ -25,6 +25,12 @@ public class Purchase implements Serializable {
         this.date = date;
     }
 
+    public Purchase(Long id, Product product, LocalDate date) {
+        this.id = id;
+        this.product = product;
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }
