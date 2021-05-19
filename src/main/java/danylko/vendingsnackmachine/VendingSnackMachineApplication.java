@@ -25,7 +25,7 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
         String str = "";
         String commandStr = "";
         ConsoleWriter.println(ConsoleHandler.START_LINE);
-        ConsoleWriter.print(">");
+        ConsoleWriter.print("> ");
         try ( BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             while(!(str = reader.readLine().trim()).equals("exit")) {
                 commandStr = CommandParser.parseCommand(str);
@@ -36,7 +36,7 @@ public class VendingSnackMachineApplication implements CommandLineRunner {
                 else {
                     ConsoleWriter.println(ConsoleHandler.NO_EXISTING_COMMAND);
                 }
-                ConsoleWriter.print(">");
+                ConsoleWriter.print("> ");
             }
         } catch (IOException e) {
             e.printStackTrace();

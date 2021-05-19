@@ -28,7 +28,6 @@ class ProductServiceJPAImplTest {
     void init() {
         product = new Product("Sweets", 20.55, 12);
         productFromDB = new Product(1L,"Sweets", 20.55, 12);
-
         productService = new ProductServiceJPAImpl(productRepository);
     }
 

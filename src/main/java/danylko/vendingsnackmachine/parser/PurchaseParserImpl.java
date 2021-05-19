@@ -41,7 +41,7 @@ public class PurchaseParserImpl implements PurchaseParser {
     public boolean isYearMonthFormat(String args) {
         String[] argsArr = args.split(" ");
         if (argsArr.length == 2) {
-            return argsArr[1].length() < 8;
+            return argsArr[1].length() == 7;
         }
         return false;
     }

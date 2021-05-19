@@ -51,6 +51,8 @@ class ProductParserImplTest {
                 () -> parser.parseAmount(addCategoryWithoutQuotes));
         assertThrows(ProductParseException.class,
                 () -> parser.parsePrice(addItemWithoutAmount));
+        assertThrows(ProductParseException.class,
+                () -> parser.parsePrice(""));
     }
 
     @Test
@@ -58,5 +60,6 @@ class ProductParserImplTest {
         assertTrue(parser.isAmountPresent(addCategory));
         assertFalse(parser.isAmountPresent(addCategoryWithoutQuotes));
         assertFalse(parser.isAmountPresent(addCategoryWithoutAmount));
+        assertFalse(parser.isAmountPresent(""));
     }
 }
