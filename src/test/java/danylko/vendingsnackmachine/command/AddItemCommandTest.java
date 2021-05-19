@@ -4,6 +4,7 @@ import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.exception.ProductParseException;
 import danylko.vendingsnackmachine.parser.ProductParser;
 import danylko.vendingsnackmachine.service.ProductService;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,18 +12,16 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
-class AddCategoryCommandTest {
+class AddItemCommandTest {
 
-    private Command command;
+    Command command;
     private Product product;
     private Product productFromDB;
     private String correctStr;
-    private String incorrectStr;
+    private String withoutQuotesStr;
+    private String withoutAmountStr;
     private String category;
-    private double price;
     private int amount;
 
     @Mock
@@ -33,31 +32,35 @@ class AddCategoryCommandTest {
 
     @BeforeEach
     void init() {
-        command = new AddCategoryCommand(service, parser);
-        product = new Product("Sweets", 55.55, 5);
+        command = new AddItemCommand(service, parser);
+        product = new Product("Sweets", null, 5);
         productFromDB = new Product(1L, "Sweets", 55.55, 5);
-        correctStr = "addCategory \"Sweets\" 55.55 5";
-        incorrectStr = "addCategory \"Swee 55.55";
+        correctStr = "addItem \"Sweets\" 5";
+        withoutQuotesStr = "addItem Sweets 5";
+        withoutAmountStr = "addItem \"Sweets\"";
         category = "Sweets";
-        price = 55.55;
         amount = 5;
     }
     @Test
-    void shouldCreateProduct() throws ProductParseException {
+    void shouldAddAmountToExistProduct() throws ProductParseException {
         when(parser.parseCategory(correctStr)).thenReturn(category);
-        when(parser.parsePrice(correctStr)).thenReturn(price);
         when(parser.parseAmount(correctStr)).thenReturn(amount);
-        when(parser.isAmountPresent(correctStr)).thenReturn(true);
-        when(service.create(product)).thenReturn(productFromDB);
+        when(service.addAmount(product)).thenReturn(productFromDB);
 
         command.execute(correctStr);
 
-        verify(service, times(1)).create(product);
+        verify(parser, times(1)).parseCategory(correctStr);
+        verify(parser, times(1)).parseAmount(correctStr);
+        verify(service, times(1)).addAmount(product);
     }
+
     @Test
-    void shouldNotCreateProduct() throws ProductParseException {
-        when(parser.parseCategory(incorrectStr)).thenThrow(ProductParseException.class);
-        command.execute(incorrectStr);
-        verify(service, times(0)).create(product);
+    void shouldThrowException() throws ProductParseException {
+        when(parser.parseCategory(withoutQuotesStr)).thenThrow(ProductParseException.class);
+        command.execute(withoutQuotesStr);
+
+        verify(parser, times(1)).parseCategory(withoutQuotesStr);
+        verify(service, times(0)).addAmount(product);
     }
+
 }
