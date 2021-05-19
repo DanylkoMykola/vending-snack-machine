@@ -4,7 +4,7 @@ Implementation of console vending snack machine. This application allows to do C
 ## How to run  
 Clone this app on your computer:   
 ```git clone```  
-You can open and run it in your IDE.  
+Open it in your IDE, import all dependencies and run it.  
 ### or  
 You can build ***jar***:  
 ```mvn install```  
