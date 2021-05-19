@@ -130,4 +130,5 @@ public class Product implements Serializable, Comparable<Product> {
         DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
         return category + " " + priceFormat.format(price);
     }
+
 }

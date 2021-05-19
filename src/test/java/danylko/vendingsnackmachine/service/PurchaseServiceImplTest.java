@@ -20,26 +20,29 @@ import static org.junit.jupiter.api.Assertions.*;
 class PurchaseServiceImplTest {
 
     private PurchaseService purchaseService;
-    Purchase purchase;
-    Purchase purchaseFromDB;
-    List<Purchase> purchasesYearMonth;
-    List<Purchase> purchasesFullDate;
-    Map<Product, Integer> reportFullDate;
-    Map<Product, Integer> reportYearMonth;
+    private Purchase purchase;
+    private Purchase purchaseFromDB;
+    private List<Purchase> purchasesYearMonth;
+    private List<Purchase> purchasesFullDate;
+    private Map<Product, Integer> reportFullDate;
+    private Map<Product, Integer> reportYearMonth;
+    private Product product;
 
     @Mock
     private PurchaseRepository repository;
+    @Mock
+    private ProductService service;
 
     @BeforeEach
     void init() {
-        Product product1 = new Product(1L,"Sweets", 55.5, 2);
+        product = new Product(1L,"Sweets", 55.5, 2);
         Product product2 = new Product(1L, "Candy", 40.5, 2);
         Product product3 = new Product(1L, "Snack", 54.0, 2);
 
-        purchaseService = new PurchaseServiceImpl(repository);
-        purchase = new Purchase(product1, LocalDate.of(2021,5, 15));
+        purchaseService = new PurchaseServiceImpl(repository, service);
+        purchase = new Purchase(product, LocalDate.of(2021,5, 15));
 
-        purchaseFromDB = new Purchase(1L, product1, LocalDate.of(2021,5, 15));
+        purchaseFromDB = new Purchase(1L, product, LocalDate.of(2021,5, 15));
         Purchase purchaseFromDB1 = new Purchase(2L, product2, LocalDate.of(2021,5, 10));
         Purchase purchaseFromDB2 = new Purchase(3L, product3, LocalDate.of(2021,5, 10));
         Purchase purchaseFromDB3 = new Purchase(4L, product3, LocalDate.of(2021,5, 15));
@@ -59,7 +62,7 @@ class PurchaseServiceImplTest {
         reportFullDate.put(product3, 1);
 
         reportYearMonth = new TreeMap<>();
-        reportYearMonth.put(product1, 1);
+        reportYearMonth.put(product, 1);
         reportYearMonth.put(product2, 1);
         reportYearMonth.put(product3, 2);
 
@@ -69,8 +72,12 @@ class PurchaseServiceImplTest {
     @Test
     void shouldSavePurchase() {
         when(repository.save(purchase)).thenReturn(purchaseFromDB);
+        when(service.findByCategory(product.getCategory())).thenReturn(product);
+        when(service.update(product)).thenReturn(purchase.getProduct());
         Purchase purchaseTest = purchaseService.save(purchase);
         verify(repository, times(1)).save(purchase);
+        verify(service, times(1)).findByCategory(product.getCategory());
+        verify(service, times(1)).update(product);
         assertEquals(purchaseTest.getId(), 1L);
     }
 

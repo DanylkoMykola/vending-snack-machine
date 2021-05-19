@@ -19,16 +19,13 @@ import java.time.LocalDate;
 public class PurchaseCommand implements Command {
 
     public static final String COMMAND_NAME = "purchase";
-    private final ProductService productService;
     private final PurchaseService purchaseService;
     private final PurchaseParser purchaseParser;
     private final ProductParser productParser;
 
-    public PurchaseCommand(ProductService productService,
-                           PurchaseService purchaseService,
+    public PurchaseCommand(PurchaseService purchaseService,
                            @Qualifier("purchaseParserImpl") PurchaseParser purchaseParser,
                            ProductParser productParser) {
-        this.productService = productService;
         this.purchaseService = purchaseService;
         this.purchaseParser = purchaseParser;
         this.productParser = productParser;
@@ -39,32 +36,20 @@ public class PurchaseCommand implements Command {
         String category;
         Purchase purchase = null;
         LocalDate date = null;
-        Product productFromDB = null;
-        boolean isExist = true;
         try {
             category = productParser.parseCategory(args);
             date = purchaseParser.parseDate(args);
-            productFromDB = productService.findByCategory(category);
+            purchase = new Purchase(new Product(category), date);
         } catch (ProductParseException | PurchaseParseException e) {
-            isExist = false;
             ConsoleWriter.println(e.getMessage());
         }
-        if (productFromDB != null && date != null ) {
-            if (productFromDB.getAmount() != 0){
-                purchase = purchaseService.save( new Purchase(productFromDB, date));
-            }
-            if (purchase == null) {
-                ConsoleWriter.println(ConsoleHandler.NOTHING_TO_BUY);
-            }
-            else {
-                productFromDB.decrementAmount();
-                productService.update(productFromDB);
-                ConsoleWriter.println(purchase.toString());
-            }
+        purchase = purchaseService.save(purchase);
+        if (purchase == null) {
+            ConsoleWriter.println(ConsoleHandler.NOTHING_TO_BUY);
+        }
+        else {
+            ConsoleWriter.println(purchase.toString());
+        }
 
-        }
-        else if (isExist){
-            ConsoleWriter.println(ConsoleHandler.NO_EXISTING_CATEGORY);
-        }
     }
 }

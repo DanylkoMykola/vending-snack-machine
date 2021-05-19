@@ -13,8 +13,10 @@ import java.util.*;
 public class PurchaseServiceImpl implements PurchaseService {
 
     private final PurchaseRepository repository;
-    public PurchaseServiceImpl(PurchaseRepository repository) {
+    private final ProductService productService;
+    public PurchaseServiceImpl(PurchaseRepository repository, ProductService productService) {
         this.repository = repository;
+        this.productService = productService;
     }
 
     @Override
@@ -22,7 +24,18 @@ public class PurchaseServiceImpl implements PurchaseService {
         if (purchase == null) {
             return null;
         }
-        return repository.save(purchase);
+        if (purchase.getDate() == null) {
+            return null;
+        }
+        Product productFromDB = productService.findByCategory(purchase.getProduct().getCategory());
+        if (productFromDB == null || productFromDB.getAmount() == 0) {
+            return null;
+        }
+        purchase.setProduct(productFromDB);
+        Purchase purchaseFromDB = repository.save(purchase);
+        productFromDB.decrementAmount();
+        productService.update(productFromDB);
+        return purchaseFromDB;
     }
 
     @Override

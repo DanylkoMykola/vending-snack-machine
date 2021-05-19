@@ -33,11 +33,11 @@ class ProductServiceJPAImplTest {
 
     @Test
     void shouldCreateNewProduct() {
-        when(productRepository.findProductByCategory(product.getCategory())).thenReturn(null);
+        when(productRepository.findProductByCategoryAndDeleteAtIsNull(product.getCategory())).thenReturn(null);
         when(productRepository.save(product)).thenReturn(productFromDB);
         Product productTest = productService.create(product);
         verify(productRepository, times(1)).save(product);
-        verify(productRepository, times(1)).findProductByCategory(product.getCategory());
+        verify(productRepository, times(1)).findProductByCategoryAndDeleteAtIsNull(product.getCategory());
         assertNotNull(productTest.getId());
     }
 
@@ -52,22 +52,22 @@ class ProductServiceJPAImplTest {
     @Test
     void shouldUpdateProduct() {
         Product productUpdate = new Product(1L,"Sweets", 20.55, 11);
-        when(productRepository.findProductByCategory(product.getCategory())).thenReturn(productFromDB);
+        when(productRepository.findProductByCategoryAndDeleteAtIsNull(product.getCategory())).thenReturn(productFromDB);
         when(productRepository.save(productFromDB)).thenReturn(productUpdate);
         Product productTest = productService.update(product);
         verify(productRepository, times(1)).save(productFromDB);
-        verify(productRepository, times(1)).findProductByCategory(product.getCategory());
+        verify(productRepository, times(1)).findProductByCategoryAndDeleteAtIsNull(product.getCategory());
         assertEquals(productTest.getAmount(), productUpdate.getAmount());
     }
 
     @Test
     void shouldAddAmount() {
         Product productUpdate = new Product(1L,"Sweets", 41.10, 12);
-        when(productRepository.findProductByCategory(product.getCategory())).thenReturn(productFromDB);
+        when(productRepository.findProductByCategoryAndDeleteAtIsNull(product.getCategory())).thenReturn(productFromDB);
         when(productRepository.save(productFromDB)).thenReturn(productUpdate);
         Product productTest = productService.update(product);
         verify(productRepository, times(1)).save(productFromDB);
-        verify(productRepository, times(1)).findProductByCategory(product.getCategory());
+        verify(productRepository, times(1)).findProductByCategoryAndDeleteAtIsNull(product.getCategory());
         assertEquals(productTest.getPrice(), productUpdate.getPrice());
     }
 
@@ -86,18 +86,18 @@ class ProductServiceJPAImplTest {
     void shouldReturnAllProducts() {
         List<Product> products = new ArrayList<>();
         products.add(product);
-        when(productRepository.findAll()).thenReturn(products);
+        when(productRepository.findAllByDeleteAtIsNull()).thenReturn(products);
         productService.getAllProducts();
-        verify(productRepository, times(1)).findAll();
+        verify(productRepository, times(1)).findAllByDeleteAtIsNull();
         assertEquals(products.size(), 1);
     }
 
     @Test
     void shouldReturnProductByCategory() {
         String category = product.getCategory();
-        when(productRepository.findProductByCategory(category)).thenReturn(productFromDB);
+        when(productRepository.findProductByCategoryAndDeleteAtIsNull(category)).thenReturn(productFromDB);
         Product productTest = productService.findByCategory(category);
-        verify(productRepository, times(1)).findProductByCategory(category);
+        verify(productRepository, times(1)).findProductByCategoryAndDeleteAtIsNull(category);
         assertEquals(productFromDB.getId(), productTest.getId());
     }
     @Test
