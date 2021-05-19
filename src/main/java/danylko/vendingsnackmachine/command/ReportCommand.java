@@ -2,10 +2,10 @@ package danylko.vendingsnackmachine.command;
 
 import danylko.vendingsnackmachine.console.ConsoleWriter;
 import danylko.vendingsnackmachine.console.handler.ConsoleHandler;
+import danylko.vendingsnackmachine.entity.Product;
 import danylko.vendingsnackmachine.entity.Purchase;
 import danylko.vendingsnackmachine.exception.PurchaseParseException;
 import danylko.vendingsnackmachine.parser.PurchaseParser;
-import danylko.vendingsnackmachine.parser.PurchaseParserImpl;
 import danylko.vendingsnackmachine.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -33,7 +33,7 @@ public class ReportCommand implements Command {
 
     @Override
     public void execute(String args) {
-        Map<Purchase, Integer> report = null;
+        Map<Product, Integer> report = null;
         LocalDate date;
         YearMonth yearMonth;
         boolean isExist = true;
@@ -52,11 +52,11 @@ public class ReportCommand implements Command {
             ConsoleWriter.write(e.getMessage());
         }
         if (report != null && !report.isEmpty()) {
-            for (Map.Entry<Purchase, Integer> pair : report.entrySet()) {
-                Purchase purchase = pair.getKey();
+            for (Map.Entry<Product, Integer> pair : report.entrySet()) {
+                Product product = pair.getKey();
                 int amount = pair.getValue();
-                total += purchase.getPrice() * amount;
-                ConsoleWriter.write(purchase.toString() + " " + amount);
+                total += product.getPrice() * amount;
+                ConsoleWriter.write(product.toString() + " " + amount);
             }
             DecimalFormat priceFormat = new DecimalFormat("#.00", new DecimalFormatSymbols(Locale.ENGLISH));
             ConsoleWriter.write("Total " + priceFormat.format(total));

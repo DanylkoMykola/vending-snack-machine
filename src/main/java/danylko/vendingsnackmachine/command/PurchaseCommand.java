@@ -51,9 +51,7 @@ public class PurchaseCommand implements Command {
         }
         if (productFromDB != null && date != null ) {
             if (productFromDB.getAmount() != 0){
-                purchase = purchaseService.save( new Purchase(productFromDB.getCategory(),
-                        productFromDB.getPrice(),
-                        date));
+                purchase = purchaseService.save( new Purchase(productFromDB, date));
             }
             if (purchase == null) {
                 ConsoleWriter.write(ConsoleHandler.NOTHING_TO_BUY);

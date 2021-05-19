@@ -11,6 +11,6 @@ import java.util.Map;
 @Service
 public interface PurchaseService {
     Purchase save(Purchase purchase);
-    Map<Purchase, Integer> getReportByYearMonth(YearMonth yearMonth);
-    Map<Purchase, Integer> getReportByDate(LocalDate date);
+    Map<Product, Integer> getReportByYearMonth(YearMonth yearMonth);
+    Map<Product, Integer> getReportByDate(LocalDate date);
 }

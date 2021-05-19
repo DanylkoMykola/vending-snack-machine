@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,6 +23,12 @@ public class Product implements Serializable, Comparable<Product> {
 
     @Column
     private Integer amount = 0;
+
+    @Column
+    private LocalDate deleteAt;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<Purchase> purchases;
 
     public Product(Long id, String category, Double price, Integer amount) {
         this.id = id;
@@ -79,6 +86,14 @@ public class Product implements Serializable, Comparable<Product> {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public LocalDate getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDate deleteAt) {
+        this.deleteAt = deleteAt;
     }
 
     public void decrementAmount() {

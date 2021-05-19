@@ -5,6 +5,7 @@ import danylko.vendingsnackmachine.repo.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class ProductServiceJPAImpl implements ProductService {
         if (productFromDB == null){
             return repository.save(product);
         }
+        if (productFromDB.getDeleteAt() != null)  {
+            productFromDB.setDeleteAt(null);
+            return repository.save(productFromDB);
+        }
         return productFromDB;
     }
 
@@ -36,7 +41,7 @@ public class ProductServiceJPAImpl implements ProductService {
             return null;
         }
         Product productFromDB = repository.findProductByCategory(product.getCategory());
-        if (productFromDB == null){
+        if (productFromDB == null || productFromDB.getDeleteAt() != null){
             return null;
         }
         productFromDB.setAmount(product.getAmount());
@@ -48,7 +53,7 @@ public class ProductServiceJPAImpl implements ProductService {
             return null;
         }
         Product productFromDB = repository.findProductByCategory(product.getCategory());
-        if (productFromDB == null){
+        if (productFromDB == null || productFromDB.getDeleteAt() != null){
             return null;
         }
         productFromDB.setAmount(product.getAmount() + productFromDB.getAmount());
@@ -58,13 +63,15 @@ public class ProductServiceJPAImpl implements ProductService {
     @Override
     @Transactional
     public List<Product> deleteEmptyCategories() {
-        return repository.deleteProductByAmount(0);
+        List<Product> products = repository.findAllByAmount(0);
+        products.forEach(product -> product.setDeleteAt(LocalDate.now()));
+        return products;
     }
 
     @Override
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
-        Iterable<Product> iterable = repository.findAll();
+        Iterable<Product> iterable = repository.findAllByDeleteAtIsNull();
         iterable.forEach(products::add);
         return products;
     }
